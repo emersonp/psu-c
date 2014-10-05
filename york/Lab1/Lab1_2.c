@@ -11,9 +11,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// A friendly reminder for file compilation.
-// use gcc -Wall -std=c99 -g inputfilename.c -o -outputfilename.o -lm
-
 int main(int argc, char* argv[]) {
 
     // Get user integer.
