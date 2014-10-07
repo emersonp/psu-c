@@ -48,5 +48,9 @@ int main(int argc, char* argv[]) {
     }
 
     // Print dotProduct
-    printf("The dot product of the %d-dimensional vector is %d.\n", intSize, dotProduct);
+    printf("The dot product of %d vectors is %d.\n", intSize, dotProduct);
 }
+
+// Question 1: It "matters" if an integer is positive or negative only to the extent that you'll be adding a possibly negative (possible = !double negative) value, but no, you can add a vector going in the "other" direction to a dot product.
+
+// Question 2: Nope. You could add together 100 3-dimensional vectors using the same methodology. 

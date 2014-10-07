@@ -17,14 +17,14 @@
 int main(int argc, char* argv[]) {
     
     // Declare some variables.
-    char* startAlph = "abcdefghijklmnopqrstuvwxyz";
-    int alphLength = 26;
-    int tempLengthIndex;
-    char tempChar;
-    char* newAlph = NULL;
-    newAlph = (char*) (malloc(sizeof(char) * alphLength));
-    char* tempAlph = NULL;
-    char typedChar[26];
+    char startAlph[27];
+    strcpy(startAlph, "abcdefghijklmnopqrstuvwxyz");
+    int alphLength = 15;
+    char tempChar1;
+    char tempChar2;
+    int tempLoc1;
+    int tempLoc2;
+    char typedChar[27];
 
     // Get time of day in ms and use to seed random
     struct timeval programTime;
@@ -33,30 +33,20 @@ int main(int argc, char* argv[]) {
     gettimeofday(&programTime, NULL);
     srand(programTime.tv_usec);
 
-    // Pull a random letter from startAlph and create newAlph, putting letter into newAlph
-    do {    
-        tempChar = startAlph[(rand()%alphLength)];
-        // printf("Temp char: %c\n", tempChar);
-        newAlph[26-alphLength] = tempChar;
-        tempAlph = (char*) (malloc(sizeof(char) * alphLength - 1));
-        tempLengthIndex = 0;
-        for (int i = 0; i < alphLength; i++) {
-            if (startAlph[i] != tempChar) {
-                tempAlph[tempLengthIndex] = startAlph[i];
-                tempLengthIndex++;
-            }
+    // Swap two random characters in startAlph 13 times. Thirteen times is the number Simon gave for guaranteed randomization (all possible permutationspossible).    
+        for (int i = 0; i < 15; i++) {
+            tempChar1 = startAlph[tempLoc1 = (rand()%26)];
+            tempChar2 = startAlph[tempLoc2 = (rand()%26)];
+            startAlph[tempLoc1] = tempChar2;
+            startAlph[tempLoc2] = tempChar1;
         }
-        alphLength--;
-        startAlph = tempAlph;
-        // For Simon - 'free(tempAlph);' seems to cause problems here - I am unsure as to why.
-    } while (alphLength > 0);
     
     // Request character from user, ending if not letter of alphabet in order.
     do {
         gettimeofday(&loopTime, NULL);
-        printf("Type the following string:\n%s\n", newAlph);
+        printf("Type the following string:\n%s\n", startAlph);
         scanf("%s", &typedChar[0]);
-        if (strcmp(newAlph, typedChar) == 0) {
+        if (strcmp(startAlph, typedChar) == 0) {
             printf("\nCorrect!\n");
             break;
         }
