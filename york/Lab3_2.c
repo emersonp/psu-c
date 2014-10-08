@@ -20,8 +20,8 @@ int main(int argc, char* argv[]) {
     int numPairs = 0;
     int* intArrX = NULL;
     int* intArrY = NULL;
-    float euclidDistance = 0;
-    float minDistance = 0;
+    double euclidDistance = 0;
+    double minDistance = 0;
     int closePoints[4];
 
     // Open file, assign to fileHandle
