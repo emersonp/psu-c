@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
             }
         }
     }
-    printf("The closest two points (or points tied for closest) are:\n(X, Y)\t(%d, %d)\n(X, Y)\t(%d, %d)\n", closePoints[0], closePoints[1], closePoints[2], closePoints[3]);
+    printf("The closest two points (or points tied for closest) are:\n(X, Y)\t(%d, %d)\n(X, Y)\t(%d, %d)\n\nThey are %f arbitrary units from each other.\n", closePoints[0], closePoints[1], closePoints[2], closePoints[3], minDistance);
                 
     return 0;
 }
@@ -66,4 +66,5 @@ int computeDistance(int xCoor1, int yCoor1, int xCoor2, int yCoor2) {
     ySquare = (yCoor1 - yCoor2) * (yCoor1 - yCoor2);
     return sqrt(xSquare + ySquare);
 }
-    
+
+// Question 1: Currently, the program only tracks only the last occurrence of the smallest distance. In order to track multiple, you would need to set aside a much larger array for closePoints, but that would also either need to be dynamic (??) or as large as the n(n-1)/2, where n is numPairs, because you might get passed an array of 100 coordinates all the same distance from each other.
