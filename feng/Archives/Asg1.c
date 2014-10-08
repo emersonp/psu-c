@@ -19,7 +19,6 @@ int main(int argc, char* argv[]) {
     // Declare some variables.
     char startAlph[27];
     strcpy(startAlph, "abcdefghijklmnopqrstuvwxyz");
-    int alphLength = 15;
     char tempChar1;
     char tempChar2;
     int tempLoc1;
@@ -33,19 +32,19 @@ int main(int argc, char* argv[]) {
     gettimeofday(&programTime, NULL);
     srand(programTime.tv_usec);
 
-    // Swap two random characters in startAlph 13 times. Thirteen times is the number Simon gave for guaranteed randomization (all possible permutationspossible).    
-        for (int i = 0; i < 15; i++) {
+    // Swap two random characters in startAlph 13 times. Thirteen times is the number Simon gave for guaranteed randomization (all possible permutations possible).
+        for (int i = 0; i < 13; i++) {
             tempChar1 = startAlph[tempLoc1 = (rand()%26)];
             tempChar2 = startAlph[tempLoc2 = (rand()%26)];
             startAlph[tempLoc1] = tempChar2;
             startAlph[tempLoc2] = tempChar1;
         }
     
-    // Request character from user, ending if not letter of alphabet in order.
+    // Request typing from user.
     do {
         gettimeofday(&loopTime, NULL);
-        printf("Type the following string:\n%s\n", startAlph);
-        scanf("%s", &typedChar[0]);
+        printf("Type the following string (followed by <enter>):\n%s\n", startAlph);
+        scanf("%26s", &typedChar[0]); // If user types alphabet correctly and keeps going, program will register as correct input.
         if (strcmp(startAlph, typedChar) == 0) {
             printf("\nCorrect!\n");
             break;

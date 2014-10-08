@@ -61,6 +61,6 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-// Question a: It matters only in that the cell of the resulting product matrix will be positive or negative.
+// Question a: It matters only in that the cell of the resulting product matrix will be more or less (or even positive or negative, depending on the size).
 // Question b: A dot product is just a one-dimensional matrix.
 // Question c: I don't believe it would, since the scanf uses %d, which hunts for a digit, then hunts for another digit, scanning past the commas.
