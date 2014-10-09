@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
     for (int m = 0; m < firstNum; m++) {    
         for (int j = 0; j < firstNum; j++) {
             for (int k = 0; k < firstNum; k++) {
-                cellProduct += firstMatrix[m * firstNum + j] * secondMatrix[j + firstNum * k];
+                cellProduct += firstMatrix[m * firstNum + k] * secondMatrix[j + firstNum * k];
             }
             productMatrix[m * firstNum + j] = cellProduct;
             cellProduct = 0;
