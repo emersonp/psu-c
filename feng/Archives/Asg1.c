@@ -17,8 +17,8 @@
 int main(int argc, char* argv[]) {
     
     // Declare some variables.
-    char startAlph[27];
-    strcpy(startAlph, "abcdefghijklmnopqrstuvwxyz");
+    char startAlph[27] = "abcdefghijklmnopqrstuvwxyz";
+    //strcpy(startAlph, "abcdefghijklmnopqrstuvwxyz");
     char tempChar1;
     char tempChar2;
     int tempLoc1;
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     do {
         gettimeofday(&loopTime, NULL);
         printf("Type the following string (followed by <enter>):\n%s\n", startAlph);
-        scanf("%26s", &typedChar[0]); // If user types alphabet correctly and keeps going, program will register as correct input.
+        scanf("%s", &typedChar[0]); // If user types alphabet correctly and keeps going, program will register as correct input.
         if (strcmp(startAlph, typedChar) == 0) {
             printf("\nCorrect!\n");
             break;
