@@ -26,27 +26,31 @@ void offBit(char *byteSet, int bitSet) {
     *byteSet = (*byteSet & ~(1<<bitSet));
 }
 
-//void moveBit(char *byteSet, int bitSet, bool bitOn) {
-//    if (bitOn) {
-//       onBit(&byteSet,
-
 int main(int argc, char* argv[]) {
     
     // Declare some variables.
-    char inputBuffer[50];
+    long bufferSize = 0;
+    char* inputBuffer;
     int inputIndex = 0;
-    char outputBuffer[50];
+    char* outputBuffer;
     int outputIndex = 0;
     char manipBuffer[5];
     int manipIndex = 0;
     char* fileToOpen;
 
-    // Open the file.
+    // Open the file. Get the data.
     fileToOpen = argv[1] ? argv[1] : "pemerson";
     FILE* fileHandle = fopen(fileToOpen, "r");
     {
-        fseek(fileHandle, SEEK_SET, 0); // Seek to the start of the file.
-        fread(inputBuffer, sizeof(char), 50, fileHandle);
+        fseek(fileHandle, 0, SEEK_SET); // Seek to the start of the file.
+        fseek(fileHandle, 0, SEEK_END); // Go to the end.
+        bufferSize = ftell(fileHandle);
+        fseek(fileHandle, SEEK_SET, 0); // Back to beginning.
+        inputBuffer = (char*)(malloc(sizeof(char) * bufferSize));
+        memset(inputBuffer, 0, bufferSize);
+        outputBuffer = (char*)(malloc(sizeof(char) * bufferSize));
+        memset(outputBuffer, 0, bufferSize);
+        fread(inputBuffer, sizeof(char), bufferSize, fileHandle);
     }
     fclose(fileHandle);
 
@@ -55,7 +59,7 @@ int main(int argc, char* argv[]) {
     //
     // Stage One
     //
-    while (outputIndex < 46) {
+    while (outputIndex < (bufferSize - 4)) {
         manipIndex = 0;
         manipBuffer[manipIndex++] = inputBuffer[inputIndex++];
         manipBuffer[manipIndex++] = inputBuffer[inputIndex++];
@@ -66,14 +70,14 @@ int main(int argc, char* argv[]) {
         outputBuffer[outputIndex++] = manipBuffer[2];
         outputBuffer[outputIndex++] = manipBuffer[1];
     }
-    while (outputIndex < 50) {
+    while (outputIndex < bufferSize) {
         outputBuffer[outputIndex++] = inputBuffer[inputIndex++];
     }
     
     //
     // Stage Two
     //
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < bufferSize; i++) {
         if (outputBuffer[i] == 0) {
             continue;
         }
@@ -108,7 +112,7 @@ int main(int argc, char* argv[]) {
     // Stage Three
     //
 
-    for (int i = 0; i < 48; i++) {
+    for (int i = 0; i < bufferSize; i++) {
         if (i % 4 == 1 || i % 4 == 3) {
             outputBuffer[i] = (outputBuffer[i] ^ 'm');
         }
