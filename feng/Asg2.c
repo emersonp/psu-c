@@ -120,6 +120,9 @@ int main(int argc, char* argv[]) {
 
     printf("%s\n", outputBuffer);
 
+    free(outputBuffer);
+    free(inputBuffer);
+    
     return 0;
 }    
 

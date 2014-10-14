@@ -18,6 +18,47 @@
 int arraySize = 0;
 int** graphArr = NULL;
 int vertCount = 0;
+int* queueArr = NULL;
+int queuePop = 0;
+int queuePush = 0;
+
+void pushQueue(int pushVar) {
+    queueArr[queuePush] = pushVar;
+    if (queuePush == arraySize - 1) {
+        queuePush = 0;
+    } else {
+        queuePush++;
+    }
+}
+
+void popQueue() {
+    queueArr[queuePop] = 0;
+    if (queuePop == arraySize - 1) {
+        queuePop = 0;
+    } else {
+        queuePop++;
+    }
+}
+
+int isEmpty() {
+    return (queuePop == queuePush);
+}
+
+void breadthFirst(int vertice) {
+    vertCount++;
+    graphArr[vertice][vertice] = vertCount;
+    pushQueue(vertice);
+    while (!isEmpty()) {
+        for (int i = 0; i < arraySize; i++) {
+            if (graphArr[i][queueArr[queuePop]] == 1 && graphArr[i][i] == 0) {
+                vertCount++;
+                graphArr[i][i] = vertCount;
+                pushQueue(i);
+            }
+        }
+        popQueue();
+    }
+}
 
 void depthFirst(int vertice) {
     vertCount++;
@@ -32,7 +73,10 @@ void depthFirst(int vertice) {
 void printArr() {
     for (int y = 0; y < arraySize; y++) {
         for (int x = 0; x < arraySize; x++) {
-            printf("%d ", graphArr[x][y]);
+            printf("%d  ", graphArr[x][y]);
+            if (graphArr[x][y] < 10) {
+                printf(" ");
+            }
         }
         printf("\n");
     }
@@ -46,6 +90,7 @@ int main(int argc, char* argv[]) {
         // Create arrays.
         fscanf(fileHandle, "%d", &arraySize);
         graphArr = (int **)(malloc(sizeof(int *) * arraySize));
+        queueArr = (int *)(malloc(sizeof(int) * arraySize));
         for (int i = 0; i < arraySize; i++) {
             graphArr[i] = (int *)(malloc(sizeof(int) * arraySize));
         }
@@ -60,8 +105,34 @@ int main(int argc, char* argv[]) {
 
     printf("\nInitial Input Array\n");
     printArr();
-    depthFirst(0);
+    // Set all visits to 0. Self-referencing vertices not important.
+    for (int i = 0; i < arraySize; i++) {
+        graphArr[i][i] = 0;
+    }
+
+    // Depth First
+    for (int i = 0; i < arraySize; i++) {
+        if (graphArr[i][i] == 0) {
+            depthFirst(0);
+        }
+    }
+    
     printf("\nDepth First Array\n");
+    printArr();
+
+    // Clear Visited
+    for (int i = 0; i < arraySize; i++) {
+        graphArr[i][i] = 0;
+    }
+
+    // Breadth First
+    vertCount = 0;
+    for (int i = 0; i < arraySize; i++) {
+        if (graphArr[i][i] == 0) {
+            breadthFirst(i);
+        }
+    }
+    printf("\nBreadth First Array\n");
     printArr();
 
 
