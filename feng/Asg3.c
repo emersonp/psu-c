@@ -18,22 +18,28 @@
 int main(int argc, char *argv[]) {
 
     // Instructions for use:
-    printf("\n\nUsage: Asg3.o <# of frac_bits> <# of exp_bits> <hex_to_convert>\n\n");
     if (!(argv[1] && argv[2] && argv[3])) {
-        printf("\nPlease pass in three arguments in the format [int][int][hex].\n");
+        printf("\n\nUsage: Asg3.o <# of frac_bits> <# of exp_bits> <hex_to_convert>\n\n");
         exit(0);
     }
     
     // Declare some variables.
-    int inputSign = 0;
     int inputHex;
     sscanf(argv[3], "%x", &inputHex);
     int fractionSize = atoi(argv[1]);
-    int exponentSize = atoi(argv[2]);
-    int bias = pow(2, (exponentSize - 1)) - 1;
-    int maskVar = 0;
+    int fractionInt = 0;
+    float significand;
     float fraction = 0;
+    int exponentSize = atoi(argv[2]);
+    int exponent = 0;
+    int bias = pow(2, (exponentSize - 1)) - 1;
+    int characteristic;
+    int maskVar = 0;
+    float output = 0;
     int normalized = 1;
+    int signedBit = 0;
+    int onesPresent = 0;
+    int zeroesPresent = 0;
 
     // Test input arguments.
     if (fractionSize < 2 || fractionSize > 10) {
@@ -50,7 +56,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Create fraction.
-    int fractionInt = (inputHex & maskVar);
+    fractionInt = (inputHex & maskVar);
     for (int i = 1; i <= fractionSize; i++) {
         if (fractionInt & 1 << (fractionSize - i)) {
             fraction += pow(2, -i);
@@ -65,36 +71,64 @@ int main(int argc, char *argv[]) {
     maskVar = maskVar << fractionSize;
 
     // Create exponent.
-    int exponent = (inputHex & maskVar);
+    exponent = (inputHex & maskVar);
     exponent = exponent >> fractionSize;
-    exponent -= bias;
+    characteristic = exponent - bias;
 
     // Signed bit.
-    int signedBit = (inputHex & 1 << (fractionSize + exponentSize));
+    signedBit = (inputHex & 1 << (fractionSize + exponentSize));
     if (signedBit) {
         signedBit = 1;
     }
 
-    // Create mantissa.
-    float mantissa = 0;
-    if (normalized) {
-        mantissa = 1 + fraction;
+    // Check normalization, NaN, infinity.
+    for (int i = 0; i < exponentSize; i++) {
+        if (exponent & 1 << i) {
+            onesPresent++;
+        } else {
+            zeroesPresent++;
+        }
     }
-    printf("mantissa: %f\n", mantissa);
+    if (!onesPresent) {
+        normalized = 0;
+    }
+    if (!zeroesPresent) {
+        if (!fraction) {
+            if (signedBit) {
+                printf("-Infinity.\n\n");
+                exit(0);
+            } else {
+                printf("+Infinity.\n\n");
+                exit(0);
+            }
+        } else {
+            printf("NaN.\n\n");
+            exit(0);
+        }
+    }
+
+    // Create significand.
+    significand = 0;
+    if (normalized) {
+        significand = 1 + fraction;
+    }
+    printf("significand: %f\n", significand);
 
     // Create and print the Output of Formula
-    float output = (mantissa * pow(2, exponent));
+    output = (significand * pow(2, characteristic));
     if (signedBit) {
         output = -output;
     }
     printf("The total of your input is %f.\n", output);
 
-    // Print
-    printf("inputHex: %d\n", inputHex);
-    printf("exponent: %d\n", exponent);
-    printf("bias: %d\n", bias);
-    printf("fractionInt: %d\n", fractionInt);
-    printf("signedBit: %d\n", signedBit);
+    // Print debugging, left here in case Parker wants to fiddle with the program in the future.
+    /*
+     * printf("inputHex: %d\n", inputHex);
+     * printf("exponent: %d\n", characteristic);
+     * printf("bias: %d\n", bias);
+     * printf("fractionInt: %d\n", fractionInt);
+     * printf("signedBit: %d\n", signedBit);
+     */
 
 }    
 
