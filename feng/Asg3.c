@@ -38,8 +38,6 @@ int main(int argc, char *argv[]) {
     float output = 0;
     int normalized = 1;
     int signedBit = 0;
-    int onesPresent = 0;
-    int zeroesPresent = 0;
 
     // Test input arguments.
     if (fractionSize < 2 || fractionSize > 10) {
@@ -63,6 +61,21 @@ int main(int argc, char *argv[]) {
         }
     }
     
+    // Signed bit.
+    signedBit = (inputHex & 1 << (fractionSize + exponentSize));
+    if (signedBit) {
+        signedBit = 1;
+    }
+
+
+    // Create significand.
+    significand = 0;
+    if (normalized) {
+        significand = 1 + fraction;
+    } else {
+        significand = fraction;
+    }
+
     // Reset and recreate maskVar.
     maskVar = 0;
     for (int i = 0; i < exponentSize; i++) {
@@ -73,26 +86,18 @@ int main(int argc, char *argv[]) {
     // Create exponent.
     exponent = (inputHex & maskVar);
     exponent = exponent >> fractionSize;
-    characteristic = exponent - bias;
-
-    // Signed bit.
-    signedBit = (inputHex & 1 << (fractionSize + exponentSize));
-    if (signedBit) {
-        signedBit = 1;
+    if (normalized) {
+        characteristic = exponent - bias;
+    } else {
+        characteristic = 1 - bias;
     }
 
     // Check normalization, NaN, infinity.
-    for (int i = 0; i < exponentSize; i++) {
-        if (exponent & 1 << i) {
-            onesPresent++;
-        } else {
-            zeroesPresent++;
-        }
-    }
-    if (!onesPresent) {
+    if (!exponent) {
+        printf("\nExponent: %d\n", exponent);
         normalized = 0;
     }
-    if (!zeroesPresent) {
+    if (!~exponent) {
         if (!fraction) {
             if (signedBit) {
                 printf("-Infinity.\n\n");
@@ -106,24 +111,15 @@ int main(int argc, char *argv[]) {
             exit(0);
         }
     }
-
-    // Create significand.
-    significand = 0;
-    if (normalized) {
-        significand = 1 + fraction;
-    } else {
-        significand = fraction;
-    }
-
     // Create and print the Output of Formula
     output = (significand * pow(2, characteristic));
     if (signedBit) {
         output = -output;
     }
-    printf("The total of your input is %f.\n", output);
+    printf("\nThe total of your input is %f.\n\n\n", output);
 
     // Print debugging, left here in case Parker wants to fiddle with the program in the future.
-    
+    /*
       printf("inputHex: %d\n", inputHex);
       printf("significand: %f\n", significand);
       printf("exponent (without bias): %d\n", exponent);
@@ -131,7 +127,7 @@ int main(int argc, char *argv[]) {
       printf("bias: %d\n", bias);
       printf("fractionInt: %d\n", fractionInt);
       printf("signedBit: %d\n", signedBit);
-     
+    */ 
 
 }    
 
