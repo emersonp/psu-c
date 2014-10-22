@@ -111,8 +111,9 @@ int main(int argc, char *argv[]) {
     significand = 0;
     if (normalized) {
         significand = 1 + fraction;
+    } else {
+        significand = fraction;
     }
-    printf("significand: %f\n", significand);
 
     // Create and print the Output of Formula
     output = (significand * pow(2, characteristic));
@@ -122,13 +123,15 @@ int main(int argc, char *argv[]) {
     printf("The total of your input is %f.\n", output);
 
     // Print debugging, left here in case Parker wants to fiddle with the program in the future.
-    /*
-     * printf("inputHex: %d\n", inputHex);
-     * printf("exponent: %d\n", characteristic);
-     * printf("bias: %d\n", bias);
-     * printf("fractionInt: %d\n", fractionInt);
-     * printf("signedBit: %d\n", signedBit);
-     */
+    
+      printf("inputHex: %d\n", inputHex);
+      printf("significand: %f\n", significand);
+      printf("exponent (without bias): %d\n", exponent);
+      printf("characteristic (exponent): %d\n", characteristic);
+      printf("bias: %d\n", bias);
+      printf("fractionInt: %d\n", fractionInt);
+      printf("signedBit: %d\n", signedBit);
+     
 
 }    
 
