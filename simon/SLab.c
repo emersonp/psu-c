@@ -12,6 +12,8 @@ void treeCreate(node* nodeHandle) {
     // nodeHandle->intValue = 0;
     // nodeHandle->nodeLeft = NULL;
     // nodeHandle->nodeRight = NULL;
+    //
+    // Why is this here? nodeRoot is initialized to { 0 }, so nodeRoot is already created. To what end?
 
 }
 
