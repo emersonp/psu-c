@@ -1,5 +1,5 @@
 /* Copyright (c) 2014 Parker  Harris Emerson
- This program (Parker3) implements a DFA over the alphabet Sigma = {a,b}
+ This program (Parker3) implements a DFA over the alphabet Delta = {a,b}
  The DFA accepts the language consisting of words of the form
  where every 'a' is immediately followed by a 'b'.  The charcater
  'c' is used to terminate the word (input)
