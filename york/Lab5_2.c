@@ -1,5 +1,5 @@
 // Copyright (c) 2014 Parker Harris Emerson
-// Lab 5-1 Assignment for New Beginnings Fall 2014, Assigned by Bryant York.
+// Lab 5-2 Assignment for New Beginnings Fall 2014, Assigned by Bryant York.
 // Given an array of n elements, A[0, ... , n − 1] sorted in ascending order and a search key, K, perform a non-recursive binary search. Output the index of the array’s element that is equal to K or -1 if there is no such element. The input file for your C program is named “data8.txt” and it has the same format as “data1.txt”. You should test your code with various elements from the list (eg 1910, 9218, 24459) as well as elements not on the list (eg. 1895, 14416).
 
 // Simon says: A complete list of includes.
